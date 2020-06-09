@@ -18,7 +18,7 @@ struct ContentView: View {
         ZStack {
             Background { location in
                 self.animate = false
-                let p = CGSize(width: location.x - 100, height: location.y - 50)
+                let p = CGSize(width: location.x - 75, height: location.y - 25)
                 print(p)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
                     withAnimation(nil) {
@@ -35,16 +35,16 @@ struct ContentView: View {
             }
             .background(Color.clear)
             .zIndex(1)
-            .frame(width: 200, height: 100)
+            .frame(width: 150, height: 50)
             Button(action: {
                 print("Button action")
             }) {
-                Text("Tap me")
+                Text("Register")
                     .bold()
                     .padding()
                     .foregroundColor(.white)
-                    .font(.title)
-                    .frame(width: 200, height: 100)
+                    .font(.headline)
+                    .frame(width: 150, height: 50)
                     .background(Color.blue)
                     .overlay(
                         Circle()
@@ -52,14 +52,14 @@ struct ContentView: View {
                             .opacity(self.animate ? 0 : 1)
                             .frame(width: 1, height: 1)
                             .shadow(color: Color.white.opacity(0.3), radius: 20)
-                            .scaleEffect(self.animate ? 20 : 0)
+                            .scaleEffect(self.animate ? 10 : 0)
                             .animation(self.animate ? Animation.easeOut(duration: 1) : nil)
                             .offset(point)
                             .animation(nil)
                 )
                     .mask(
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: 200, height: 100)
+                        RoundedRectangle(cornerRadius: 25)
+                            .frame(width: 150, height: 50)
                 )
             }
         }
@@ -87,12 +87,12 @@ struct Background: UIViewRepresentable {
     // MARK: - UIViewRepresentable methods
     
     func makeCoordinator() -> Background.Coordinator {
-        Coordinator(tappedCallback:self.tappedCallback)
+        Coordinator(tappedCallback: tappedCallback)
     }
     
     func makeUIView(context: UIViewRepresentableContext<Background>) -> UIView {
         let view = UIView(frame: .zero)
-        let gesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.tapped))
+        let gesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(context.coordinator.tapped))
         view.addGestureRecognizer(gesture)
         return view
     }
@@ -117,7 +117,7 @@ struct Background: UIViewRepresentable {
         
         // MARK: - Custom methods
         
-        @objc func tapped(gesture:UITapGestureRecognizer) {
+        @objc func tapped(gesture: UITapGestureRecognizer) {
             let point = gesture.location(in: gesture.view)
             self.tappedCallback(point)
         }
